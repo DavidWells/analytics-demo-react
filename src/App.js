@@ -2,15 +2,17 @@ import React, { Component } from 'react'
 import analyticsLib from 'analytics'
 import googleAnalytics from 'analytics-plugin-ga'
 import vanillaIntegration from './vanilla-integration'
-import logger from './plugins/logger'
+import reduxLogdown from 'redux-logdown'
+// import logger from './plugins/simple-logger'
+import debug from './plugins/debug'
 import visualize from './plugins/visualize'
 import { paramsParse } from 'analytics-utils'
-import logo from './logo.svg'
 import './App.css'
 
-// console.log('config', config)
+console.log('reduxLogdown', reduxLogdown)
 
 const params = paramsParse()
+
 console.log('params', params)
 
 export default class App extends Component {
@@ -20,22 +22,53 @@ export default class App extends Component {
       version: 100,
       debug: true,
       plugins: [
-        logger,
-        visualize,
+        debug('analytics'),
+
+        visualize({ nodeId: 'log' }),
+
         // cancelAction,
         vanillaIntegration({
           trackingId: 'lololo',
         }),
         googleAnalytics({
           trackingId: 'UA-126647663-1',
+          // debug: true
         })
       ]
+    })
+
+    analytics.ready(() => {
+      console.log('ready')
+
+    })
+
+    analytics.disableIntegration('vanilla')
+
+    // analytics.on('*', (action, store) => {
+    //   console.log('on', action)
+    // })
+
+    // analytics.on('track', (action, store) => {
+    //   console.log('on track', action)
+    // })
+
+    // analytics.track('lolEvent', () => {
+    //   analytics.disableIntegration('vanilla')
+    // })
+    // analytics.track('two')
+
+    analytics.track('three')
+
+
+    analytics.track({
+      eventName: 'wowza',
+      other: 'shit'
     })
 
     // Simulate 2 sec load on vanilla global
     setTimeout(() => {
       window.vanillaLoaded = true
-    }, 2000)
+    }, 1000)
 
     window.analytics = analytics
   }

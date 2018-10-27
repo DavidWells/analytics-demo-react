@@ -11,7 +11,6 @@ export const config = {
 
 /* initialize Vanilla script */
 export const initialize = (config) => {
-  console.log('initialize vanilla')
   if (!config.trackingId) {
     throw new Error('No Setting id defined')
   }
