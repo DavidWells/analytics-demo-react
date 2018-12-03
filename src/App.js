@@ -2,22 +2,15 @@ import React, { Component } from 'react'
 import analyticsLib from 'analytics'
 import googleAnalytics from 'analytics-plugin-ga'
 import vanillaIntegration from './vanilla-integration'
-import segmentIntegration from './segment-integration'
-import reduxLogdown from 'redux-logdown'
+import segmentIntegration from 'analytics-plugin-segment'
+// import reduxLogdown from 'redux-logdown'
 import logger from './plugins/simple-logger'
 import debug from './plugins/debug'
 import visualize from './plugins/visualize'
 import cancelAction from './plugins/cancelAction'
-import { paramsParse, noOp } from 'analytics-utils'
+import { noOp } from 'analytics-utils'
 import './App.css'
 
-import utils from 'analytics-utils'
-
-window.utils = utils
-console.log('utils', utils)
-console.log('reduxLogdown', reduxLogdown)
-
-const params = paramsParse()
 const analytics = analyticsLib({
   app: 'doggieDating',
   version: 100,
@@ -36,7 +29,9 @@ const analytics = analyticsLib({
       trackingId: 'UA-126647663-1',
       // debug: true
     }),
-    segmentIntegration()
+    segmentIntegration({
+      trackingId: "f3W8BZ0iCGrk1STIsMZV7JXfMGB7aMiW"
+    })
   ]
 })
 
@@ -82,7 +77,7 @@ export default class App extends Component {
       window.SegmentLoaded = true
     }, 1000)
 
-    window.analytics = analytics
+    window.Analytics = analytics
   }
   handleIdentify = () => {
     analytics.identify('xyz-123', {
